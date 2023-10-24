@@ -1,48 +1,72 @@
-const cardsInfo = [
+const skills = [
   {
-    id: 7336,
-    question: 'Do quê aplicações React são feitas?',
-    answer: 'Componentes',
+    id: crypto.randomUUID(),
+    name: 'Cozinhar',
+    bgColor: 'bg-yellow',
+    emoji: '😋',
   },
   {
-    id: 8832,
-    question: 'Qual é o nome da sintaxe usada para descrever UI no React?',
-    answer: 'JSX',
+    id: crypto.randomUUID(),
+    name: 'Programação',
+    bgColor: 'bg-red',
+    emoji: '👍',
   },
+  { id: crypto.randomUUID(), name: 'Games', bgColor: 'bg-pink', emoji: '🤙' },
   {
-    id: 3457,
-    question: 'Em qual linguagem o React é baseado?',
-    answer: 'JavaScript',
-  },
-  {
-    id: 9103,
-    question: 'Qual método usar para renderizar uma lista no React?',
-    answer: 'map',
-  },
-  {
-    id: 1297,
-    question: 'Qual empresa criou o React?',
-    answer: 'Meta',
-  },
-  {
-    id: 2002,
-    question: 'Como passar informações para um componente React?',
-    answer: 'Através de props',
+    id: crypto.randomUUID(),
+    name: 'Inglês',
+    bgColor: 'bg-lightblue',
+    emoji: '🤟',
   },
 ];
 
-const App = () => {
-  const handleClick = (id) => console.log(id);
+const Avatar = () => (
+  <img
+    src="https://avatars.githubusercontent.com/u/119951373?v=4"
+    alt="User avatar"
+    className="avatar"
+  />
+);
 
-  return (
-    <ul className="flashcards">
-      {cardsInfo.map(({ id, question }) => (
-        <li key={id} className="card" onClick={() => handleClick(id)}>
-          {question}
-        </li>
-      ))}
-    </ul>
-  );
-};
+const Intro = () => (
+  <>
+    <h1>João Gabriel</h1>
+    <p>
+      Tenho 22 anos e moro em Curitiba. Comecei a entrar no mundo da programação
+      no meu emprego anterior, como trabalhava na área financeira, vi que muitos
+      processos e problemas do dia a dia poderiam ser resolvidos com python, e
+      desde então, fui conhecendo a área e me encontrei no javascript. No início
+      do ano, troquei a faculdade de economia por ADS, comecei a acompanhar os
+      vídeos do Roger e tenho me dedicado integralmente à fluência em
+      javascript, e como sinto que estou próximo, acho que chegou a hora do
+      react!
+    </p>
+  </>
+);
+
+const Skill = ({ name, emoji, bgColor }) => (
+  <li className={`${bgColor} skill`}>
+    {emoji} {name}
+  </li>
+);
+
+const ListOfSkills = () => (
+  <ul className="list-of-skills">
+    {skills.map(({ id, name, emoji, bgColor }) => (
+      <Skill key={id} name={name} emoji={emoji} bgColor={bgColor} />
+    ))}
+  </ul>
+);
+
+const App = () => (
+  <div className="card">
+    <Avatar />
+
+    <div className="info">
+      <Intro />
+      <ListOfSkills />
+    </div>
+  </div>
+);
 
 export { App };
