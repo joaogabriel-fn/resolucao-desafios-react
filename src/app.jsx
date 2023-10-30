@@ -1,145 +1,64 @@
-const burgers = [
+import { useState } from 'react';
+
+const steps = [
   {
     id: crypto.randomUUID(),
-    name: 'Duo',
-    ingredients:
-      'Pão selado na manteiga, hambúrguer BOVINO de 160gr, cheddar, cebola caramelizada e molho especial',
-    price: 37,
-    photoName: 'img/burgers/duo.jpg',
-    soldOut: false,
+    description: 'Entender o problema do cliente',
   },
   {
     id: crypto.randomUUID(),
-    name: 'Kids',
-    ingredients:
-      'Burger de blend de cogumelos e mandioca, abacaxi caramelizado, muçarela, alface, tomate e molho verde',
-    price: 29,
-    photoName: 'img/burgers/kids.jpg',
-    soldOut: false,
+    description: 'Desenvolver a solução do problema',
   },
   {
     id: crypto.randomUUID(),
-    name: 'Master',
-    ingredients:
-      'Pão selado na manteiga, hambúrguer BOVINO de 100gr, bacon, cheddar e barbecue',
-    price: 51,
-    photoName: 'img/burgers/master.jpg',
-    soldOut: false,
-  },
-  {
-    id: crypto.randomUUID(),
-    name: 'Monster',
-    ingredients:
-      'Pão selado na manteiga, 2x hambúrguer BOVINO de 100gr, bacon, cheddar e barbecue',
-    price: 47,
-    photoName: 'img/burgers/monster.jpg',
-    soldOut: false,
-  },
-  {
-    id: crypto.randomUUID(),
-    name: 'Prime',
-    ingredients:
-      'Pão selado na manteiga, hambúrguer de CARNE DE SOL de 160gr, queijo coalho, bacon, alface, tomate, cebola roxa e melaço de cana',
-    price: 43,
-    photoName: 'img/burgers/prime.jpg',
-    soldOut: true,
-  },
-  {
-    id: crypto.randomUUID(),
-    name: 'Slim',
-    ingredients:
-      'Pão selado na manteiga, hambúrguer CUPIM de 180gr, 2 fatias de muçarela, alface, tomate, picles de cebola roxa e molho especial de alho',
-    price: 27,
-    photoName: 'img/burgers/slim.jpg',
-    soldOut: false,
+    description:
+      'Repetir até o cliente ficar feliz e encher seu 🍑 de dinheiro',
   },
 ];
 
-const Header = () => (
-  <header>
-    <img className="logo" src="/img/logo-burgao-do-ze.jpg" alt="" />
-  </header>
-);
+const App = () => {
+  const [shouldBeOpen, setShouldBeOpen] = useState(true);
+  const [step, setStep] = useState(1);
 
-const Burger = ({ price, name, ingredients, soldOut, img }) => (
-  <li className={`burger ${soldOut ? 'sold-out' : ''}`}>
-    <img src={img} alt={`Burger ${name} image`} />
-    <div>
-      <h3>{name}</h3>
-      <p>{ingredients}</p>
-      <span>{soldOut ? 'CABÔ' : `R$ ${price}`}</span>
-    </div>
-  </li>
-);
-
-const Menu = () => (
-  <main className="menu">
-    {burgers.length > 0 && (
-      <>
-        <h2>Cardápio</h2>
-
-        <p>
-          Depois de uma semana desafiadora, nada melhor do que saborear um
-          burger onde cada mordida é um abraço saboroso, não é mesmo?🍔✨
-        </p>
-
-        <ul className="burgers">
-          {burgers.map((burger) => (
-            <Burger
-              key={burger.id}
-              price={burger.price}
-              name={burger.name}
-              ingredients={burger.ingredients}
-              soldOut={burger.soldOut}
-              img={burger.photoName}
-            />
-          ))}
-        </ul>
-      </>
-    )}
-  </main>
-);
-
-const OrderMsg = ({ closeHour }) => {
-  const handleClick = () => console.log('Direcionando para fazer pedido...');
+  const handleClickToggle = () => setShouldBeOpen((s) => !s);
+  const handleClickPrevious = () => setStep((s) => (s - 1 === 0 ? s : s - 1));
+  const handleClickNext = () =>
+    setStep((s) => (s === steps.length ? s : s + 1));
 
   return (
-    <div className="order">
-      <p>
-        🕛 Tamo aberto até as {closeHour}h. Vem visitar a gente ou faça seu
-        pedido online.
-      </p>
-      <button className="btn" onClick={handleClick}>
-        Fazer pedido
-      </button>
-    </div>
-  );
-};
+    <>
+      <div className="container-close">
+        <button onClick={handleClickToggle} className="close">
+          <span>{shouldBeOpen ? 'Fechar' : 'Abrir'}</span>
+        </button>
+      </div>
 
-const Footer = () => {
-  const date = new Date();
-  const hour = date.getHours();
-  const openHour = 12;
-  const closeHour = 22;
-  const isOpen = hour >= openHour && hour < closeHour;
+      {shouldBeOpen && (
+        <div className="steps">
+          <ul className="numbers">
+            {steps.map((item, i) => (
+              <li key={item.id} className={i + 1 === step ? 'active' : ''}>
+                {i + 1}
+              </li>
+            ))}
+          </ul>
 
-  return (
-    <footer className="footer">
-      {isOpen ? (
-        <OrderMsg closeHour={closeHour} />
-      ) : (
-        <p>🕛 Vamo abrir às {openHour}h</p>
+          <p className="message">
+            Passo {step}: {steps[step - 1].description}
+          </p>
+
+          <div className="buttons">
+            <button onClick={handleClickPrevious}>
+              <span>Anterior</span>
+            </button>
+            <button onClick={handleClickNext}>
+              <span>Próximo</span>
+            </button>
+          </div>
+        </div>
       )}
-    </footer>
+    </>
   );
 };
-
-const App = () => (
-  <div className="container">
-    <Header />
-    <Menu />
-    <Footer />
-  </div>
-);
 
 export { App };
