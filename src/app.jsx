@@ -16,6 +16,40 @@ const steps = [
   },
 ];
 
+const Toggle = ({ shouldBeOpen, onClickToggle }) => (
+  <div className="container-toggle">
+    <button onClick={onClickToggle} className="toggle">
+      <span>{shouldBeOpen ? 'Fechar' : 'Abrir'}</span>
+    </button>
+  </div>
+);
+
+const Steps = ({ shouldBeOpen, step, onClickPrevious, onClickNext }) =>
+  shouldBeOpen && (
+    <div className="steps">
+      <ul className="numbers">
+        {steps.map((item, i) => (
+          <li key={item.id} className={i + 1 === step ? 'active' : ''}>
+            {i + 1}
+          </li>
+        ))}
+      </ul>
+
+      <p className="message">
+        Passo {step}: {steps[step - 1].description}
+      </p>
+
+      <div className="buttons">
+        <button onClick={onClickPrevious}>
+          <span>Anterior</span>
+        </button>
+        <button onClick={onClickNext}>
+          <span>Próximo</span>
+        </button>
+      </div>
+    </div>
+  );
+
 const App = () => {
   const [shouldBeOpen, setShouldBeOpen] = useState(true);
   const [step, setStep] = useState(1);
@@ -27,36 +61,14 @@ const App = () => {
 
   return (
     <>
-      <div className="container-close">
-        <button onClick={handleClickToggle} className="close">
-          <span>{shouldBeOpen ? 'Fechar' : 'Abrir'}</span>
-        </button>
-      </div>
+      <Toggle shouldBeOpen={shouldBeOpen} onClickToggle={handleClickToggle} />
 
-      {shouldBeOpen && (
-        <div className="steps">
-          <ul className="numbers">
-            {steps.map((item, i) => (
-              <li key={item.id} className={i + 1 === step ? 'active' : ''}>
-                {i + 1}
-              </li>
-            ))}
-          </ul>
-
-          <p className="message">
-            Passo {step}: {steps[step - 1].description}
-          </p>
-
-          <div className="buttons">
-            <button onClick={handleClickPrevious}>
-              <span>Anterior</span>
-            </button>
-            <button onClick={handleClickNext}>
-              <span>Próximo</span>
-            </button>
-          </div>
-        </div>
-      )}
+      <Steps
+        shouldBeOpen={shouldBeOpen}
+        step={step}
+        onClickNext={handleClickNext}
+        onClickPrevious={handleClickPrevious}
+      />
     </>
   );
 };
