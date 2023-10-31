@@ -1,58 +1,57 @@
 import { useState } from 'react';
 
-const cardsInfo = [
+const faqs = [
   {
-    id: 7336,
-    question: 'Do quê aplicações React são feitas?',
-    answer: 'Componentes',
+    id: crypto.randomUUID(),
+    title: 'Quem é a maior celebridade do mundo dos games no BR?',
+    answer: 'A apresentadora Ana Maria Braga. Joga 3h pra desocupar a cabeça.',
   },
   {
-    id: 8832,
-    question: 'Qual é o nome da sintaxe usada para descrever UI no React?',
-    answer: 'JSX',
+    id: crypto.randomUUID(),
+    title: 'Onde fica a europa da américa do sul?',
+    answer: 'Argentina. BR vive como rei em Buenos Aires.',
   },
   {
-    id: 3457,
-    question: 'Em qual linguagem o React é baseado?',
-    answer: 'JavaScript',
-  },
-  {
-    id: 9103,
-    question: 'Qual método usar para renderizar uma lista no React?',
-    answer: 'map',
-  },
-  {
-    id: 1297,
-    question: 'Qual empresa criou o React?',
-    answer: 'Meta',
-  },
-  {
-    id: 2002,
-    question: 'Como passar informações para um componente React?',
-    answer: 'Através de props',
+    id: crypto.randomUUID(),
+    title: 'Qual é a grande oportunidade para desenvolvedores BR?',
+    answer: 'Aproveitar a alta demanda pra ganhar em dólar ou euro.',
   },
 ];
 
-const App = () => {
-  const [activeId, setActiveId] = useState(0);
-
-  const handleClick = (id) => setActiveId((a) => (a === id ? 0 : id));
+const Item = ({ title, answer, index, onClickItem, activeIndex }) => {
+  const active = index === activeIndex;
 
   return (
-    <ul className="flashcards">
-      {cardsInfo.map(({ id, question, answer }) => {
-        const active = id === activeId;
+    <li
+      className={`item ${active ? 'active' : ''}`}
+      onClick={() => onClickItem(index)}
+    >
+      <p className="number">{index + 1}</p>
+      <h2 className="title">{title}</h2>
+      <p className="icon">{active ? '-' : '+'}</p>
+      {active && <div className="content-box">{answer}</div>}
+    </li>
+  );
+};
 
-        return (
-          <li
-            key={id}
-            className={`card ${active ? 'active' : ''}`}
-            onClick={() => handleClick(id)}
-          >
-            {active ? answer : question}
-          </li>
-        );
-      })}
+const App = () => {
+  const [activeIndex, setActiveIndex] = useState(null);
+
+  const handleClick = (index) =>
+    setActiveIndex((a) => (a === index ? null : index));
+
+  return (
+    <ul className="accordion">
+      {faqs.map((faq, index) => (
+        <Item
+          key={faq.id}
+          title={faq.title}
+          answer={faq.answer}
+          index={index}
+          onClickItem={handleClick}
+          activeIndex={activeIndex}
+        />
+      ))}
     </ul>
   );
 };
