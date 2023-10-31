@@ -1,51 +1,59 @@
 import { useState } from 'react';
 
-const DateMsg = ({ count }) => {
-  const date = new Date();
-  const formattedDate = new Intl.DateTimeFormat('pt-br', {
-    weekday: 'long',
-    month: 'short',
-    year: 'numeric',
-    day: '2-digit',
-  }).format(date.setDate(date.getDate() + count));
-  const singularPlural = count === 1 || count === -1 ? 'dia' : 'dias';
-
-  return (
-    <h2>
-      {count > 0
-        ? `${count} ${singularPlural} à partir de hoje será ${formattedDate}`
-        : count < 0
-        ? `${Math.abs(count)} ${singularPlural} atrás era ${formattedDate}}`
-        : `Hoje é ${formattedDate}`}
-    </h2>
-  );
-};
+const cardsInfo = [
+  {
+    id: 7336,
+    question: 'Do quê aplicações React são feitas?',
+    answer: 'Componentes',
+  },
+  {
+    id: 8832,
+    question: 'Qual é o nome da sintaxe usada para descrever UI no React?',
+    answer: 'JSX',
+  },
+  {
+    id: 3457,
+    question: 'Em qual linguagem o React é baseado?',
+    answer: 'JavaScript',
+  },
+  {
+    id: 9103,
+    question: 'Qual método usar para renderizar uma lista no React?',
+    answer: 'map',
+  },
+  {
+    id: 1297,
+    question: 'Qual empresa criou o React?',
+    answer: 'Meta',
+  },
+  {
+    id: 2002,
+    question: 'Como passar informações para um componente React?',
+    answer: 'Através de props',
+  },
+];
 
 const App = () => {
-  const [step, setStep] = useState(1);
-  const [count, setCount] = useState(0);
+  const [activeId, setActiveId] = useState(0);
 
-  const decrementStep = () => setStep((s) => (s === 1 ? s : s - 1));
-  const decrementCount = () => setCount((c) => c - step);
-  const incrementStep = () => setStep((s) => s + 1);
-  const incrementCount = () => setCount((c) => c + step);
+  const handleClick = (id) => setActiveId((a) => (a === id ? 0 : id));
 
   return (
-    <div className="container">
-      <div className="count">
-        <button onClick={decrementStep}>-</button>
-        <h2>Intervalo: {step}</h2>
-        <button onClick={incrementStep}>+</button>
-      </div>
+    <ul className="flashcards">
+      {cardsInfo.map(({ id, question, answer }) => {
+        const active = id === activeId;
 
-      <div className="count">
-        <button onClick={decrementCount}>-</button>
-        <h2>Contagem: {count}</h2>
-        <button onClick={incrementCount}>+</button>
-      </div>
-
-      <DateMsg count={count} />
-    </div>
+        return (
+          <li
+            key={id}
+            className={`card ${active ? 'active' : ''}`}
+            onClick={() => handleClick(id)}
+          >
+            {active ? answer : question}
+          </li>
+        );
+      })}
+    </ul>
   );
 };
 
