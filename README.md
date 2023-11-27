@@ -1,118 +1,118 @@
-# Bateria de Desafios 03
+README.md
 
-Sugestão: para uma melhor organização, implemente cada desafio abaixo usando uma cópia do boilerplate que fizemos com Vite em aulas passadas. 
+# Bateria de Desafios 08
 
-Um repositório para cada desafio. 
+Nenhum dos desafios abaixo tem relação direta um com o outro. Isso significa que para cada desafio, você pode se desfazer do código do desafio anterior (ou versioná-lo antes de deletá-lo).
 
-Isso vai tender a deixar cada aplicação mais fácil de ser encontrada no futuro, caso você precise.
+Importante: estilização não é o foco em nenhum desafio desta bateria.
 
-Cada desafio pressupõe que você tem o código-fonte de cada aplicação implementada na Bateria de Desafios 02.
-
-A pasta ui-examples (desta pasta bateria-de-desafios-03) contém exemplos de como a interface de cada aplicação deve ficar em determinados momentos. 
-
-Lembrando:
-
-Se o desafio não especificar como você deve "quebrar" a interface em diferentes componentes, isso fica a seu critério. Não existe melhor ou pior, apenas faça.
-
-Se a descrição do desafio não especificou "como" fazer, descobrir é parte do desafio.
-
-Se nas aulas não foi mostrado "como" fazer, descobrir é parte do desafio.
+Nunca é demais relembrar: se não foi especificado "como" fazer, descobrir é parte do desafio.
 
 ---
 
 # Desafio 01
 
-A aplicação Passos agora precisa ter as seguintes funcionalidades...
+Exiba na tela um botão "Buscar imagem".
 
-Quando a aplicação carregar, o círculo com o número 1 deve estar verde e o passo exibido deve ser o 1, como mostrado em aberto.jpg.
+Exiba uma imagem aleatória na tela a cada clique no botão.
 
-Ao clicar no botão Fechar, o texto do botão deve mudar para "Abrir" e o container abaixo do botão deve ser removido da tela, como mostrado em fechado.jpg.
+A imagem deve ser exibida acima do botão.
 
-Ao clicar no botão Abrir, o texto do botão deve mudar para "Fechar" e o container abaixo do botão deve ser exibido na tela, como mostrado em aberto.jpg.
-
-Ao clicar no botão "Próximo", o círculo com o número do novo passo deve ficar verde e o novo texto com o passo e mensagem deve ser exibido na tela. No exemplo proximo-clicado.jpg, o clique em "Próximo" mudou a interface do passo 1 para o passo 2. 
-
-Se, ao exibir o último passo, o botão "Próximo" for clicado, a interface deve se manter no último passo (3).
-
-Ao clicar no botão Anterior, a mesma lógica deve se repetir, porém, para os passos anteriores. No exemplo anterior-clicado.jpg, o clique em Anterior mudou a interface do passo 3 para o passo 2. 
-
-Se, ao exibir o primeiro passo, o botão Anterior for clicado, a interface deve se manter no primeiro passo (1).
-
-Use o array de passos abaixo:
-
-```js
-const steps = [
-  { 
-    id: crypto.randomUUID(), 
-    description: "Entender o problema do cliente" 
-  },
-  {
-    id: crypto.randomUUID(),
-    description: "Desenvolver a solução do problema",
-  },
-  {
-    id: crypto.randomUUID(),
-    description: "Repetir até o cliente ficar feliz e encher seu 🍑 de dinheiro",
-  },
-]
-```
+Use qualquer API que retorne uma imagem aleatória.
 
 ---
 
 # Desafio 02
 
-Adicione as seguintes funcionalidades a aplicação Contador de Data...
+Quando seu App carregar ou recarregar, exiba na tela 3 imagens aleatórias.
 
-Quando a aplicação carregar, o Intervalo deve ser 1, a Contagem 0 e o dia, mês e ano atual deve ser exibido, como em estado-inicial.jpg.
+Use qualquer API que retorne imagens aleatórias.
 
-Quando o botão "+" de contagem for clicado, contagem deve exibir "1" e a data de 1 dia após deve ser exibida, como em 1-dia-apos.jpg.
-
-Quando o botão "+" de contagem for clicado várias vezes, a nova contagem deve exibir a quantidade de dias e a data correspondente, sempre incrementando de 1 em 1 dia, como mostrado em varios-dias-apos.jpg.
-
-A lógica inversa se aplica a quando o botão "-" de contagem for clicado, como mostrado em 1-dia-atras.jpg e varios-dias-atras.jpg.
-
-Quando o botão "-" de intervalo for clicado, e o intervalo estiver em 1, ele deve permanecer em 1. Não deve haver intervalo zero ou negativo.
-
-Quando o intervalo for incrementado de 1 em 1 (através do clique no botão "+"), o incremento entre datas ao clicar no botão "+" da contagem deve corresponder ao intervalo. 
-
-Isto é, se após o carregar da aplicação, o intervalo for incrementado para 3, ao clicar no botão "+" da contagem, a data exibida deve ser a data de daqui 3 dias. 3-dias-a-partir-de-hj.jpg exemplifica este caso. 
-
-A lógica acima se repete para qualquer intervalo. O contador sempre precisa obedecer o intervalo entre datas. 
-
-O intervalo também deve valer para quando a contagem for negativa, como mostrado em 9-dias-atras.jpg.
+Use uma API diferente da API do desafio anterior.
 
 ---
 
 # Desafio 03
 
-A aplicação Flashcards agora precisa ter as seguintes funcionalidades...
+Volte na aplicação "Passos", que você fez em baterias passadas.
 
-Quando a aplicação carregar, todos os cards devem conter apenas as perguntas, como em cards-estado-inicial.jpg.
+Ao invés de deixar o array "steps" em sua aplicação, coloque-o no GitHub.
 
-Quando um card for clicado, ele deve exibir a resposta da pergunta com a cor de fundo lightblue e a cor do texto #323232, como em card-ativo.jpg.
-
-Se outro card for clicado, o card clicado anteriormente deve voltar a exibir a pergunta e apenas a resposta do card clicado por último deve ser exibida.
-
-Se o mesmo card for clicado novamente, ele deve voltar a exibir a pergunta, como em cards-estado-inicial.jpg.
+Use o GitHub como API para obter este array em sua aplicação.
 
 ---
 
 # Desafio 04
 
-A aplicação Accordion agora precisa ter as seguintes funcionalidades...
+Volte na aplicação "Racha-conta", que você fez em baterias passadas.
 
-Quando a aplicação carregar, todos os itens devem estar fechados, como em accordion-estado-inicial.jpg.
+Quando um amigo for selecionado para rachar a conta, exiba no title da aba a seguinte mensagem:
 
-Quando um item for clicado, ele ficar com as seguintes características:
+NOME_DO_AMIGO foi selecionado(a)
 
-- resposta da pergunta exibida
-- número da pergunta na cor pink
-- pergunta na cor pink
-- faixa acima da pergunta na cor pink
-- ícone de "-" (ao invés de "+") ao lado da pergunta
+"NOME_DO_AMIGO" é apenas um placeholder. A mensagem deve exibir o nome do amigo selecionado.
 
-O arquivo accordion-item-aberto.jpg exemplifica o estado descrito acima.
+Se o form de rachar a conta for fechado, o title da aba deve voltar a exibir a mensagem padrão "Racha-conta".
 
-Se outro item for clicado, o item clicado anteriormente deve voltar ao seu estado inicial (fechado) e apenas o item clicado por último deve ficar aberto.
+---
 
-Se o mesmo item for clicado novamente, ele deve voltar ao seu estado inicial.
+# Desafio 05
+
+Implemente uma aplicação de conversão de moedas.
+
+Use qualquer API de conversão de moedas que te traga o câmbio de USD para BRL, EUR para USD, etc.
+
+Você pode implementar essa aplicação à partir da marcação CSS e JSX abaixo.
+
+Lembre-se: estilização não é o foco em nenhum desafio desta bateria.
+
+Há um screenshot da aplicação na pasta img.
+
+Também não se preocupe em adicionar mais options nos selects ou qualquer outro aspecto da aplicação que possa desviar a atenção dos efeitos colaterais. O foco deste desafio é o gerenciamento dos efeitos colaterais.
+
+O h2 deve ser renderizado apenas quando o câmbio for obtido.
+
+Evite que um request seja feito a cada caractere inserido no input.
+
+O title padrão da aba deve ser "Conversor de moedas".
+
+Exiba no title da aba o câmbio e a moeda. No exemplo abaixo, houve uma conversão de 1 USD para real brasileiro.
+
+4.87 BRL
+
+Quando o valor do input for limpado, volte a exibir o title padrão da aba.
+
+```css
+.selects {
+  display: flex;
+  gap: 5px;
+}
+
+select {
+  display: block;
+  margin: 10px 0;
+}
+```
+
+```jsx
+const App = () => (
+  <>
+    <input type="number" autoFocus />
+
+    <div className="selects">
+      <select>
+        <option value="BRL">BRL</option>
+        <option value="USD">USD</option>
+        <option value="EUR">EUR</option>
+      </select>
+      <select>
+        <option value="BRL">BRL</option>
+        <option value="USD">USD</option>
+        <option value="EUR">EUR</option>
+      </select>
+    </div>
+
+    <h2>4.87 BRL</h2>
+  </>
+);
+```

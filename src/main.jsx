@@ -1,7 +1,7 @@
-import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { App } from './app.jsx';
+import { App } from './App.jsx';
 import './index.css';
+import { StrictMode } from 'react';
 
 const rootElement = document.querySelector('[data-js="root"]');
 
