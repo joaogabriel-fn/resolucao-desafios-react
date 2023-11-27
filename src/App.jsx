@@ -1,122 +1,83 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-// const App = () => {
-//   const [img, setImg] = useState([]);
+const apiKey = 'QDy6Go0nUMm975JnpxTJjSD7cHhJ9jRn';
 
-//   useEffect(() => {
-//     fetch('./src/api.json')
-//       .then((r) => r.json())
-//       .then((apiData) =>
-//         setImg(apiData.data),
-//       )
-//       .catch(console.log);
-//   }, []);
-
-//   // useEffect(() => {
-//   //   setImg((prev) => [...prev, img[0], img[1], img[2]]);
-//   // }, [img]);
-
-//   return (
-//     <ul style={{ display: 'flex' }}>
-//       {img.map((img) => (
-//         <img key={img.id} src={img.thumbs.small} alt="" />
-//       ))}
-//     </ul>
-//   );
-// };
-
-// const App = () => {
-//   const [img, setImg] = useState([]);
-
-//   useEffect(() => {
-//     fetch('./src/api.json')
-//       .then((r) => r.json())
-//       .then((apiData) =>
-//         setImg([
-//           apiData.data[Math.floor(Math.random() * 24)],
-//           apiData.data[Math.floor(Math.random() * 24)],
-//           apiData.data[Math.floor(Math.random() * 24)],
-//         ]),
-//       )
-//       .catch(console.log);
-//   }, []);
-
-//   // useEffect(() => {
-//   //   setImg((prev) => [...prev, img[0], img[1], img[2]]);
-//   // }, [img]);
-
-//   return (
-//     <ul style={{ display: 'flex' }}>
-//       {img.map((img) => (
-//         <img key={img.id} src={img.thumbs.small} alt="" />
-//       ))}
-//     </ul>
-//   );
-// };
-
-const Toggle = ({ shouldBeOpen, onClickToggle }) => (
-  <div className="container-toggle">
-    <button onClick={onClickToggle} className="toggle">
-      <span>{shouldBeOpen ? 'Fechar' : 'Abrir'}</span>
-    </button>
-  </div>
-);
-
-const Steps = ({ shouldBeOpen, steps, step, onClickPrevious, onClickNext }) =>
-  shouldBeOpen && (
-    <div className="steps">
-      <ul className="numbers">
-        {steps.map((item, i) => (
-          <li key={item.id} className={i + 1 === step ? 'active' : ''}>
-            {i + 1}
-          </li>
-        ))}
-      </ul>
-
-      <p className="message">
-        Passo {step}: {steps[step - 1]?.description}
-      </p>
-
-      <div className="buttons">
-        <button onClick={onClickPrevious}>
-          <span>Anterior</span>
-        </button>
-        <button onClick={onClickNext}>
-          <span>Próximo</span>
-        </button>
-      </div>
-    </div>
-  );
+const getUrl = (apiKey, { purity, categories }) =>
+  `/api/v1/search?apikey=${apiKey}&purity=${purity}&categories=${categories}&sorting=random`;
 
 const App = () => {
-  const [shouldBeOpen, setShouldBeOpen] = useState(true);
-  const [step, setStep] = useState(1);
-  const [steps, setSteps] = useState([]);
+  const [filter, setFilter] = useState({ shouldRender: false });
+  const [img, setImg] = useState([]);
+  const [purity, setPurity] = useState('100');
+  const [categories, setCategories] = useState('100');
+  const [displayNumber, setDisplayNumber] = useState('3');
 
   useEffect(() => {
-    fetch(
-      'https://raw.githubusercontent.com/joaogabriel-fn/fake-data/main/fake-data.json',
-    )
-      .then((response) => response.json())
-      .then((data) => setSteps(data));
-  }, []);
+    if (filter.shouldRender) {
+      fetch(getUrl(apiKey, filter))
+        .then((r) => r.json())
+        .then((data) => setImg(data.data));
+    }
+  }, [filter]);
 
-  const handleClickToggle = () => setShouldBeOpen((s) => !s);
-  const handleClickPrevious = () => setStep((s) => (s - 1 === 0 ? s : s - 1));
-  const handleClickNext = () =>
-    setStep((s) => (s === steps.length ? s : s + 1));
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    setFilter((prev) => ({
+      ...prev,
+      purity: purity,
+      categories: categories,
+      shouldRender: true,
+    }));
+  };
 
   return (
     <>
-      <Toggle shouldBeOpen={shouldBeOpen} onClickToggle={handleClickToggle} />
+      <form
+        onSubmit={handleSubmit}
+        style={{ display: 'flex', gap: 20, justifyContent: 'flex-start' }}
+      >
+        <label>
+          purity
+          <select onChange={(e) => setPurity(e.target.value)}>
+            <option value="100">sfw</option>
+            <option value="010">sketchy</option>
+            <option value="001">nsfw</option>
+          </select>
+        </label>
+        <label>
+          categories
+          <select onChange={(e) => setCategories(e.target.value)}>
+            <option value="100">general</option>
+            <option value="010">anime</option>
+            <option value="001">people</option>
+          </select>
+        </label>
+        <label>
+          display number
+          <select
+            value={displayNumber}
+            onChange={(e) => setDisplayNumber(e.target.value)}
+          >
+            {img.map((img, i) => (
+              <option key={img.id} value={i + 1}>
+                {i + 1}
+              </option>
+            ))}
+          </select>
+        </label>
 
-      <Steps
-        shouldBeOpen={shouldBeOpen}
-        step={step}
-        steps={steps}
-        onClickNext={handleClickNext}
-        onClickPrevious={handleClickPrevious}
-      />
+        <button>Filter</button>
+      </form>
+      {filter.shouldRender && (
+        <ul>
+          {img
+            .filter((_, i) => i < displayNumber)
+            .map((img) => (
+              <img key={img.id} src={img.thumbs.small} alt="" />
+            ))}
+        </ul>
+      )}
     </>
   );
 };
