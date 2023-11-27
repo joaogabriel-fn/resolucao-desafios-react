@@ -1,82 +1,73 @@
 import { useEffect, useState } from 'react';
 
-const apiKey = 'QDy6Go0nUMm975JnpxTJjSD7cHhJ9jRn';
+// https://currencylayer.com/
 
-const getUrl = (apiKey, { purity, categories }) =>
-  `/api/v1/search?apikey=${apiKey}&purity=${purity}&categories=${categories}&sorting=random`;
+const apiKey = 'b6a376e2eded2305abfc372f35de4dcd';
+
+const getUrl = (apiKey, sourceCurrency) =>
+  `http://apilayer.net/api/live?access_key=${apiKey}&currencies=BRL,USD,EUR&source=${sourceCurrency}&format=1`;
 
 const App = () => {
-  const [filter, setFilter] = useState({ shouldRender: false });
-  const [img, setImg] = useState([]);
-  const [purity, setPurity] = useState('100');
-  const [categories, setCategories] = useState('100');
-  const [displayNumber, setDisplayNumber] = useState('3');
+  const [data, setData] = useState(null);
+  const [inputValue, setInputValue] = useState(null);
+  const [sourceCurrency, setSourceCurrency] = useState('BRL');
+  const [convertCurrency, setConvertCurrency] = useState('USD');
+  const [exchange, setExchange] = useState(0);
+  const [value, setValue] = useState(0);
 
   useEffect(() => {
-    if (filter.shouldRender) {
-      fetch(getUrl(apiKey, filter))
-        .then((r) => r.json())
-        .then((data) => setImg(data.data));
-    }
-  }, [filter]);
+    fetch(getUrl(apiKey, sourceCurrency))
+      .then((r) => r.json())
+      .then((data) => setData(data));
+  }, [sourceCurrency]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  useEffect(() => {
+    setExchange(
+      sourceCurrency === convertCurrency
+        ? 1
+        : (1 / data?.quotes[sourceCurrency + convertCurrency]).toFixed(2),
+    );
+    setValue(inputValue * exchange);
+  }, [inputValue, exchange, sourceCurrency, convertCurrency, data]);
 
-    setFilter((prev) => ({
-      ...prev,
-      purity: purity,
-      categories: categories,
-      shouldRender: true,
-    }));
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
   };
 
   return (
     <>
-      <form
-        onSubmit={handleSubmit}
-        style={{ display: 'flex', gap: 20, justifyContent: 'flex-start' }}
-      >
-        <label>
-          purity
-          <select onChange={(e) => setPurity(e.target.value)}>
-            <option value="100">sfw</option>
-            <option value="010">sketchy</option>
-            <option value="001">nsfw</option>
-          </select>
-        </label>
-        <label>
-          categories
-          <select onChange={(e) => setCategories(e.target.value)}>
-            <option value="100">general</option>
-            <option value="010">anime</option>
-            <option value="001">people</option>
-          </select>
-        </label>
-        <label>
-          display number
-          <select
-            value={displayNumber}
-            onChange={(e) => setDisplayNumber(e.target.value)}
-          >
-            {img.map((img, i) => (
-              <option key={img.id} value={i + 1}>
-                {i + 1}
-              </option>
-            ))}
-          </select>
-        </label>
+      <input
+        onChange={(e) => {
+          handleInputChange(e);
+        }}
+        placeholder={sourceCurrency}
+        type="number"
+        autoFocus
+      />
 
-        <button>Filter</button>
-      </form>
-      {filter.shouldRender && (
-        <ul>
-          {img
-            .filter((_, i) => i < displayNumber)
-            .map((img) => (
-              <img key={img.id} src={img.thumbs.small} alt="" />
-            ))}
-        </ul>
+      <div className="selects">
+        <select
+          value={sourceCurrency}
+          onChange={(e) => setSourceCurrency(e.target.value)}
+        >
+          <option value="BRL">BRL</option>
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+        </select>
+        <select
+          value={convertCurrency}
+          onChange={(e) => setConvertCurrency(e.target.value)}
+        >
+          <option value="BRL">BRL</option>
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+        </select>
+      </div>
+
+      {inputValue && (
+        <h2>
+          {convertCurrency} {value}
+        </h2>
       )}
     </>
   );
