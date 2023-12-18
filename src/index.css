@@ -1,10 +1,30 @@
-.selects {
-  display: flex;
-  gap: 5px;
+body {
+  font-family: sans-serif;
+  color: white;
+  background-color: #292929;
 }
 
-select {
-  display: block;
-  margin: 10px 0;
-  width: 100px;
+.container {
+  text-align: center;
+}
+
+.count {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+button {
+  color: #292929;
+  background-color: white;
+  border-radius: 50%;
+  border: 0;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+h2 {
+  margin: 20px;
 }
